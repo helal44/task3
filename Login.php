@@ -1,4 +1,4 @@
-<?php include('./LoginController.php');
+<?php include('./controllers/LoginController.php');
 $validate=new LoginControl();
 ?>
 <!DOCTYPE html>

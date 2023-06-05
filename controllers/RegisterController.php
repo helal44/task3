@@ -1,8 +1,12 @@
 <?php
-// namespace RegisterClass;
-class RegisterControl{
+
+require_once 'dbController.php';
+
+class RegisterControl {
  public $errors=array();
-  
+
+  // valaidate data ------------------------>
+
  public function RegisterValidate($name,$email,$password,$confirmPassword,$image){
     
     if(empty($name) ){
@@ -57,8 +61,13 @@ class RegisterControl{
 
  }
 
+
+ // controle data ------------------>
+
  public function showValidateError(){
-    if(isset($_POST['submit'])){
+
+   $db=new dataBaseController();
+    if(isset($_POST['submit']) || isset($_POST['update'])){
 
         $name=$_POST['name'];
         $email=$_POST['email'];
@@ -66,6 +75,8 @@ class RegisterControl{
         $confirmPassword=$_POST['confirmPassword'];
         $room=$_POST['room'];
         $image=$_FILES['image']['name'];
+
+        // upload image  ------>
 
         if (isset($_FILES['image'])) {
 
@@ -78,13 +89,24 @@ class RegisterControl{
           } 
         }
     
+        // validate data ----->
+
         $errors=$this->RegisterValidate($name,$email,$password,$confirmPassword,$image);
         
         if(empty($errors)){
          
-          $this->CreateFile($name,$email,$password,$room,$image);
-             echo " <h5 class='text-success'> Rigster Success</h5><br>";
-              header('location:Login.php');
+          if(isset($_POST['submit'])){
+
+            $db->createDataTable();
+            $db->inserData($name,$email,$password,$room,$image);
+          }
+          else{
+            $db->updateData($name,$email,$password,$image,$room);
+          }
+         
+        
+
+
         }
         else{
             foreach($errors as $key=>$vale){

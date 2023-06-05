@@ -8,7 +8,7 @@
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
-            "url": "http://localhost/task2/Register.php",
+            "url": "http://localhost/task3/Register.php",
             "webRoot": "${workspaceFolder}"
         },
         {

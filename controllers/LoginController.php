@@ -1,4 +1,6 @@
 <?php
+
+require_once 'dbController.php';
 class LoginControl{
     public $errors=array();
 
@@ -7,11 +9,14 @@ class LoginControl{
     
         if(empty($email)){
             $this->errors['email']='email is requierd';
-    
+           
+          }
+          else{
+
             if(filter_var($email,FILTER_VALIDATE_EMAIL)==false){
                 $this->errors['emailstyle']='email not valid';
             }
-           
+
           }
 
           if(empty($password)){
@@ -24,23 +29,34 @@ class LoginControl{
 
 
      public function showValidateError(){
+        $db=new dataBaseController();
+
         if(isset($_POST['submit'])){
-    
             $email=$_POST['email'];
             $password=$_POST['password'];
-        
+
             $errors=$this->LoginValidate($email,$password);
 
+                if(empty($errors)){
+                   $data=$db->checkUSer($email,$password);
+                   if($data){
+                    echo $data['email'];
+                    session_start();
+                    $_SESSION['name']=$data['name'];
+                    $_SESSION['email']=$data['email'];
+                    $_SESSION['image']=$data['image'];
+                   
+                    header('Location:home.php');
+                   }
+                   else{
+                    echo 'there is no user with this data';
+                   }
 
-            if(empty($errors)){
-
-                $this->checkData($email,$password);
-
-            }
-            else{
-                foreach($errors as $key=>$vale){
-                    echo " <span class='text-danger'>".$key."  =>  ".$vale."</span><br>";
                 }
+                else{
+                    foreach($errors as $key=>$vale){
+                        echo " <span class='text-danger'>".$key."  =>  ".$vale."</span><br>";
+                    }
             }
         }
      }

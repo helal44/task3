@@ -1,5 +1,9 @@
 <?php
 include('./controllers/RegisterController.php');
+include_once('controllers/dbController.php');
+$db=new dataBaseController();
+  $data=$db->SearchRow();
+//  echo $data['password'];
  $validate=new RegisterControl();
 
 ?>
@@ -9,32 +13,33 @@ include('./controllers/RegisterController.php');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <title>Registration Form</title>
+  <title>Edit Form</title>
 </head>
 <body>
   <div class="container">
    
-    <h2>Registration Form</h2>
+    <h2>Edit Form</h2>
     <form method="POST" enctype="multipart/form-data" class="form-group">
 
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" value="<?php echo $data['name']; ?>">
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo $data['email']; ?>">
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" value="<?php echo $data['password']; ?>">
       </div>
 
       <div class="form-group">
         <label for="confirm-password">Confirm Password</label>
-        <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Confirm your password">
+        <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Confirm your password" value="<?php echo $data['password']; ?>">
+        
       </div>
 
       <div class="form-group">
@@ -49,8 +54,9 @@ include('./controllers/RegisterController.php');
       <div class="form-group">
         <label for="image">Choose Image</label>
         <input type="file" class="form-control" id="image" name="image" placeholder="Enter your name">
+        <span>Current image  <img src="./images/<?php echo $data['image'] ?>" alt="img" width="50"/></span>
       </div>
-      <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+      <button type="submit" class="btn btn-primary" name="update">Update</button>
       <a href="./Login.php" class="nav-link">Login</a>
 
       <?php $validate->showValidateError(); ?>
